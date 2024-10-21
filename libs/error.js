@@ -1,53 +1,23 @@
+class BadRequest extends Error {}
 
-class bad_request extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class NotFound extends Error {}
 
-class not_found extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class NoContent extends Error {}
 
-class no_content extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class Conflict extends Error {}
 
-class conflict extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class Unauthorized extends Error {}
 
-class internal_server_error extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class Forbidden extends Error {}
 
-class unauthorized extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
-
-class forbidden extends Error {
-      constructor(message) {
-            super(message);
-      }
-}
+class InternalServerError extends Error {}
 
 module.exports = {
-      bad_request,
-      not_found,
-      conflict,
-      internal_server_error,
-      no_content,
-      unauthorized,
-      forbidden
-}
-
+  BadRequest,
+  NotFound,
+  NoContent,
+  Conflict,
+  Unauthorized,
+  Forbidden,
+  InternalServerError,
+};
