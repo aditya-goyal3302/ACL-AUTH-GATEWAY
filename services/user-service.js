@@ -1,8 +1,8 @@
-const { unauthorized } = require("../libs/error");
+const { Unauthorized } = require("../libs/error");
 const { user_repository } = require("../repositories");
 
 exports.get_all_user_for_admin = async (req) => {
-  const { } = req.query;
+  const {  } = req.query;
   const response = await user_repository.findAll({ order: "DESC", limit, offset });
   response.password = undefined
   return response
@@ -11,7 +11,7 @@ exports.get_all_user_for_admin = async (req) => {
 exports.get_user_data = async req => {
   const { user_id } = req.body.user;
   const response = await user_repository.findUser({ criteria: { uuid: user_id } });
-  if (!response) new unauthorized("User not found");
+  if (!response) new Unauthorized("User not found");
   delete response.password;
   delete response.role_id;
   delete response.id;
@@ -36,7 +36,7 @@ exports.patch_user_details = async ({
     payload: { name, phone_no, email, pincode, address, city, country, state, fax },
     options: { returning: true, plain: true },
   });
-  if (!response[1]) new unauthorized("User not found");
+  if (!response[1]) new Unauthorized("User not found");
   const user = response[1];
   delete user.password;
   delete user.role_id;
@@ -52,7 +52,7 @@ exports.set_user_inactive = async req => {
     payload: { status: "inactive" },
     options: { returning: true, plain: true },
   });
-  if (!response[1]) new unauthorized("User not found");
+  if (!response[1]) new Unauthorized("User not found");
 
   delete response[1].password;
   delete response[1].role_id;
@@ -67,7 +67,7 @@ exports.set_user_active = async req => {
     payload: { status: "active" },
     options: { returning: true, plain: true },
   });
-  if (!response[1]) new unauthorized("User not found");
+  if (!response[1]) new Unauthorized("User not found");
 
   response.password = undefined;
   delete response[1].role_id;
@@ -83,7 +83,7 @@ exports.set_user_image = async req => {
     payload: { image: image[0].destination + image[0].filename },
     options: { returning: true, plain: true }
   });
-  if (!response[1]) new unauthorized("User not found");
+  if (!response[1]) new Unauthorized("User not found");
 
   delete response[1].password;
   delete response[1].role_id;
@@ -98,7 +98,7 @@ exports.delete_user_image = async req => {
     payload: { image: null },
     options: { returning: true, plain: true }
   });
-  if (!response[1]) new unauthorized("User not found");
+  if (!response[1]) new Unauthorized("User not found");
 
   delete response[1].password;
   delete response[1].role_id;

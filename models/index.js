@@ -13,12 +13,12 @@ fs.readdirSync(__dirname).forEach((item) => {
       if (file.endsWith("model.js")) {
         const modelPath = path.join(itemPath, file);
         const model = require(modelPath)(sequelize, Sequelize.DataTypes);
-        db[model.tableName] = model;
+        db[model.name] = model;
       }
     });
   } else if (item.endsWith("model.js")) {
     const model = require(itemPath)(sequelize, Sequelize.DataTypes);
-    db[model.tableName] = model;
+    db[model.name] = model;
   }
 });
 

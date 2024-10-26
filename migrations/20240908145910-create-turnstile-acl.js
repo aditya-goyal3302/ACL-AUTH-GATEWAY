@@ -27,7 +27,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM(...turnstileAclRoles.getValues()),
-        allowNull: false,
+        // allowNull: false,
       }, // for role wise access
       created_at: {
         allowNull: false,
