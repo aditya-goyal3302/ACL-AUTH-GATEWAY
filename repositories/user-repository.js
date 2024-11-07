@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository {
   async find_and_compare_password({ criteria: { email, password }, options = {} }) {
     const user = await this.findOne({ criteria: { email }, options: { ...options, plain: true } });
     if (!user) throw new BadRequest("Invalid email or password");
-    if (user.status !== userStatus.get().ACTIVE) throw new BadRequest(`User is ${user.status}`);
+    if (user.status !== userStatus.ENUM.ACTIVE) throw new BadRequest(`User is ${user.status}`);
     const check = await user.comparePassword(password);
     if (!check) throw new BadRequest("Invalid email or password");
     return user.toJSON();

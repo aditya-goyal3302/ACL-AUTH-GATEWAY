@@ -1,13 +1,11 @@
 const ENUM = require("../../libs/enum");
 
 class UserStatus extends ENUM {
-  constructor() {
-    super({
+  static ENUM = {
       ACTIVE: "ACTIVE",
       INACTIVE: "INACTIVE",
       BLOCKED: "BLOCKED",
-    });
-  }
+    }
 };
 
-exports.userStatus = new UserStatus()
+exports.userStatus = UserStatus

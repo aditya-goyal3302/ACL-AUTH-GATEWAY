@@ -35,7 +35,7 @@ exports.signup = async ({ name, username, email, password, phone_no }) => {
     const is_existing_username = await user_repository.findOne({ criteria: { username }, options: { transaction } });
     if (is_existing_username) throw new Conflict("Username Already Exists!");
     return await user_repository.create({
-      payload: { status: userStatus.get().ACTIVE, name, username, email, password, phone_no },
+      payload: { status: userStatus.ENUM.ACTIVE, name, username, email, password, phone_no },
       options: { transaction },
     });
   });
@@ -67,7 +67,7 @@ exports.verify_login = async ({ email, otp }) => {
     if (!otp) throw new BadRequest("OTP Required");
     const verification = await verify_OTP({ email, otp, purpose: "login" });
     if (!verification) throw new BadRequest("Invalid OTP");
-    if (verification.user_details.status !== userStatus.get().ACTIVE) throw new BadRequest("User Not Found");
+    if (verification.user_details.status !== userStatus.ENUM.ACTIVE) throw new BadRequest("User Not Found");
     if (verification.expires_at < new Date()) throw new BadRequest("OTP Expired");
 
     return gen_response_with_token(verification.user_details);

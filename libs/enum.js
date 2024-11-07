@@ -1,18 +1,15 @@
 module.exports = class ENUM {
-  data;
-  constructor(data) {
-    this.enum = data;
+  static ENUM = {};
+
+  static getValues() {
+    return Object.values(this.ENUM);
   }
 
-  getValues() {
-    return Object.values(this.enum);
+  static getKeys() {
+    return Object.keys(this.ENUM);
   }
 
-  getKeys() {
-    return Object.keys(this.enum);
-  }
-
-  get() {
-    return this.enum;
+  static get() {
+    return this.ENUM;
   }
 };

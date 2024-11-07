@@ -35,7 +35,7 @@ exports.verify_OTP = async ({ email, otp, purpose }) => {
     });
 
     if (!verification) throw new Error("Invalid OTP");
-    if (verification.user_details.status !== userStatus.get().ACTIVE) throw new Error("User Not Found");
+    if (verification.user_details.status !== userStatus.ENUM.ACTIVE) throw new Error("User Not Found");
     if (verification.expires_at < new Date()) throw new Error("OTP Expired");
     await verification_logs_repository.update({
       payload: { used_at: new Date() },
