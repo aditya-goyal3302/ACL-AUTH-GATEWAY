@@ -14,6 +14,9 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const result = await auth_service.login(req.body);
+    if (!result?.token) {
+      return res.status(SUCCESS).send({ message: "OTP Sent Successfully" });
+    }
     res.status(SUCCESS).send(result);
   } catch (error) {
     console.log("error_in_login: ", error);
@@ -29,7 +32,7 @@ exports.verify_login = async (req, res, next) => {
     console.log("error_in_verify_login: ", error);
     return next(error);
   }
-}
+};
 
 exports.forgot_password = async (req, res, next) => {
   try {
@@ -39,7 +42,7 @@ exports.forgot_password = async (req, res, next) => {
     console.log("error_in_forgot_password: ", error);
     return next(error);
   }
-}
+};
 
 exports.reset_password = async (req, res, next) => {
   try {
@@ -49,7 +52,7 @@ exports.reset_password = async (req, res, next) => {
     console.log("error_in_reset_password: ", error);
     return next(error);
   }
-}
+};
 
 exports.verify_reset_token = async (req, res, next) => {
   try {
@@ -59,7 +62,7 @@ exports.verify_reset_token = async (req, res, next) => {
     console.log("error_in_verify_token: ", error);
     return next(error);
   }
-}
+};
 
 exports.change_password = async (req, res, next) => {
   try {
@@ -69,4 +72,4 @@ exports.change_password = async (req, res, next) => {
     console.log("error_in_change_password: ", error);
     return next(error);
   }
-}
+};

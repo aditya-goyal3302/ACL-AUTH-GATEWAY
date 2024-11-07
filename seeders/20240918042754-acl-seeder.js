@@ -4,20 +4,20 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     queryInterface.bulkInsert("acls", [
-      {
-        uuid: "123e4567-e89b-12d3-a456-426614174000",
-        end_point: "/auth/login",
-        method: "POST",
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        uuid: "123e4567-e89b-12d3-a456-426614174001",
-        end_point: "/auth/register",
-        method: "POST",
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
+      // {
+      //   uuid: "123e4567-e89b-12d3-a456-426614174000",
+      //   end_point: "/auth/login",
+      //   method: "POST",
+      //   created_at: new Date(),
+      //   updated_at: new Date(),
+      // },
+      // {
+      //   uuid: "123e4567-e89b-12d3-a456-426614174001",
+      //   end_point: "/auth/register",
+      //   method: "POST",
+      //   created_at: new Date(),
+      //   updated_at: new Date(),
+      // },
       {
         uuid: "123e4567-e89b-12d3-a456-426614174002",
         end_point: "/user/profile",

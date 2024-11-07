@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(...userStatus.getValues()),
         allowNull: false,
       },
+      is2_step_verification_enabled: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       image: {
         type: DataTypes.STRING,
       },
@@ -69,16 +73,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       hooks: {
         beforeSave: async (user, options) => {
-          if (user.changed("password")) {
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-          }
-        },
-        beforeCreate: async (user, options) => {
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(user.password, salt);
-        },
-        beforeUpdate: async (user, options) => {
           if (user.changed("password")) {
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(user.password, salt);

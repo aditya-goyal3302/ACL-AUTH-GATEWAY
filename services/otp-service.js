@@ -1,12 +1,13 @@
 const { verification_logs_repository } = require("../repositories");
 const { mail_verification_OTP } = require("./mail-service");
 const { User } = require("../models");
+const { userStatus } = require("../models/user/user-status");
 
 exports.send_OTP = async ({ email, purpose, user }) => {
-  return await verification_logs_repository.handleManagedTransaction(async transaction => {
+  return await verification_logs_repository.handleManagedTransaction(async (transaction) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     console.log("otp: ", otp);
-    verification_logs_repository.create({
+    await verification_logs_repository.create({
       payload: {
         email,
         otp,
@@ -26,7 +27,7 @@ exports.send_OTP = async ({ email, purpose, user }) => {
 };
 
 exports.verify_OTP = async ({ email, otp, purpose }) => {
-  return await verification_logs_repository.handleManagedTransaction(async transaction => {
+  return await verification_logs_repository.handleManagedTransaction(async (transaction) => {
     const verification = await verification_logs_repository.findOne({
       criteria: { email, otp, type: "OTP", purpose },
       options: { transaction },
@@ -34,7 +35,7 @@ exports.verify_OTP = async ({ email, otp, purpose }) => {
     });
 
     if (!verification) throw new Error("Invalid OTP");
-    if (verification.user_details.status !== "active") throw new Error("User Not Found");
+    if (verification.user_details.status !== userStatus.get().ACTIVE) throw new Error("User Not Found");
     if (verification.expires_at < new Date()) throw new Error("OTP Expired");
     await verification_logs_repository.update({
       payload: { used_at: new Date() },

@@ -15,11 +15,6 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
       },
-      role_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        ref: "acls",
-      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -27,6 +22,10 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      is2_step_verification_enabled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       username: {
         type: Sequelize.STRING,

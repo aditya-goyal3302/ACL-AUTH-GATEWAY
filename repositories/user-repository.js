@@ -1,16 +1,17 @@
-const { bad_request } = require("../libs/error");
+const { BadRequest } = require("../libs/error");
 const BaseRepository = require("./base-repository");
 const { User, Acl } = require("../models");
+const { userStatus } = require("../models/user/user-status");
 
 class UserRepository extends BaseRepository {
   constructor({ model }) {
     super({ model });
   }
   include = [
-    {
-      model: Acl,
-      as: "role_data",
-    },
+    // {
+    //   model: Acl,
+    //   as: "role_data",
+    // },
   ];
   async findUser({ criteria, options }) {
     const resp = await this.findOne({
@@ -28,9 +29,10 @@ class UserRepository extends BaseRepository {
 
   async find_and_compare_password({ criteria: { email, password }, options = {} }) {
     const user = await this.findOne({ criteria: { email }, options: { ...options, plain: true } });
-    if (!user || !user.status === "active") throw new bad_request("Invalid email or password");
+    if (!user) throw new BadRequest("Invalid email or password");
+    if (user.status !== userStatus.get().ACTIVE) throw new BadRequest(`User is ${user.status}`);
     const check = await user.comparePassword(password);
-    if (!check) throw new bad_request("Invalid email or password");
+    if (!check) throw new BadRequest("Invalid email or password");
     return user.toJSON();
   }
 }
