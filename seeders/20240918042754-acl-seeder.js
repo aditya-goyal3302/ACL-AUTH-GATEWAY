@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    queryInterface.bulkInsert("turnstile_acls", [
+    queryInterface.bulkInsert("acls", [
       {
         uuid: "123e4567-e89b-12d3-a456-426614174000",
         end_point: "/auth/login",
@@ -32,17 +32,17 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       },
-      // {
-      //   uuid: "123e4567-e89b-12d3-a456-426614174004",
-      //   end_point: "/user/delete",
-      //   method: "DELETE",
-      //   created_at: new Date(),
-      //   updated_at: new Date(),
-      // },
+      {
+        uuid: "123e4567-e89b-12d3-a456-426614174004",
+        end_point: "/user/delete",
+        method: "DELETE",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    queryInterface.truncate("turnstile_acls");
+    queryInterface.truncate("acls");
   },
 };

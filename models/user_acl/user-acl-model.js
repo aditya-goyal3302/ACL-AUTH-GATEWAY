@@ -2,7 +2,7 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class TurnstileAcl extends Model {
+  class UserAcl extends Model {
     static associate(models) {
 
       this.belongsTo(models.User, {
@@ -15,26 +15,26 @@ module.exports = (sequelize, DataTypes) => {
         as: "userAcls",
       });
 
-      models.User.belongsToMany(models.TurnstileAcl, {
+      models.User.belongsToMany(models.Acl, {
         through: this, // Join through UserAcl table
         foreignKey: "user_id", // Foreign key in UserAcl pointing to User
-        otherKey: "acl_id", // Foreign key in UserAcl pointing to TurnstileAcl
-        as: "acls", // Alias for the TurnstileAcl association
+        otherKey: "acl_id", // Foreign key in UserAcl pointing to Acl
+        as: "acls", // Alias for the Acl association
       });
 
-      models.TurnstileAcl.belongsToMany(models.User, {
+      models.Acl.belongsToMany(models.User, {
         through: this,
         foreignKey: "acl_id",
         otherKey: "user_id",
         as: "users",
       });
 
-      models.TurnstileAcl.hasMany(this, {
+      models.Acl.hasMany(this, {
         foreignKey: "acl_id",
-        as: "turnstile_acl",
+        as: "acl",
       });
 
-      this.belongsTo(models.TurnstileAcl, {
+      this.belongsTo(models.Acl, {
         foreignKey: "acl_id",
         as: "acl",
       });
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  TurnstileAcl.init(
+  UserAcl.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -79,5 +79,5 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "user_acls",
     }
   );
-  return TurnstileAcl;
+  return UserAcl;
 };

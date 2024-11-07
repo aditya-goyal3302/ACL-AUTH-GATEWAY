@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
-const { turnstileAclRoles } = require("./turnstile-acl-roles");
-const { turnstileAclMethods } = require("./turnstile-acl-methods");
+const { aclRoles } = require("./acl-roles");
+const { aclMethods } = require("./acl-methods");
 
 module.exports = (sequelize, DataTypes) => {
-  class TurnstileAcl extends Model {
+  class Acl extends Model {
   }
-  TurnstileAcl.init(
+  Acl.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -23,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       method: {
-        type: DataTypes.ENUM(...turnstileAclMethods.getValues()),
+        type: DataTypes.ENUM(...aclMethods.getValues()),
         allowNull: false,
       },
       role: {
-        type: DataTypes.ENUM(...turnstileAclRoles.getValues()),
+        type: DataTypes.ENUM(...aclRoles.getValues()),
         allowNull: false,
       }, // for role wise access
       created_at: {
@@ -41,9 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "TurnstileAcl",
-      tableName: "turnstile_acls",
+      modelName: "Acl",
+      tableName: "acls",
     }
   );
-  return TurnstileAcl;
+  return Acl;
 };

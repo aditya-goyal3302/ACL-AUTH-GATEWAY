@@ -1,6 +1,6 @@
 const ENUM = require("../../libs/enum");
 
-class TurnstileAclRoles extends ENUM {
+class AclRoles extends ENUM {
   constructor() {
     super({
       EVENT_ORGANIZER: "EVENT_ORGANIZER",
@@ -14,4 +14,4 @@ class TurnstileAclRoles extends ENUM {
   }
 }
 
-exports.turnstileAclRoles = new TurnstileAclRoles();
+exports.aclRoles = new AclRoles();

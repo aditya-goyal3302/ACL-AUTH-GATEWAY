@@ -1,6 +1,6 @@
 const ENUM = require("../../libs/enum");
 
-class TurnstileAclMethods extends ENUM {
+class AclMethods extends ENUM {
   constructor() {
     super({
       GET: "GET",
@@ -12,4 +12,4 @@ class TurnstileAclMethods extends ENUM {
   }
 }
 
-exports.turnstileAclMethods = new TurnstileAclMethods();
+exports.aclMethods = new AclMethods();

@@ -1,12 +1,12 @@
 "use strict";
-const { turnstileAclMethods } = require("../models/turnstile-acl/turnstile-acl-methods");
-const { turnstileAclRoles } = require("../models/turnstile-acl/turnstile-acl-roles");
+const { aclMethods } = require("../models/acl/acl-methods");
+const { aclRoles } = require("../models/acl/acl-roles");
 
 /** @type {import('sequelize-cli').Migration} */
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("turnstile_acls", {
+    await queryInterface.createTable("acls", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -22,11 +22,11 @@ module.exports = {
         allowNull: false,
       },
       method: {
-        type: Sequelize.ENUM(...turnstileAclMethods.getValues()),
+        type: Sequelize.ENUM(...aclMethods.getValues()),
         allowNull: false,
       },
       role: {
-        type: Sequelize.ENUM(...turnstileAclRoles.getValues()),
+        type: Sequelize.ENUM(...aclRoles.getValues()),
         // allowNull: false,
       }, // for role wise access
       created_at: {
@@ -40,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("turnstile_acls");
+    await queryInterface.dropTable("acls");
   },
 };
