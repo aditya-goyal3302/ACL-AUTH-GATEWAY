@@ -1,4 +1,4 @@
-const ENUM = require("../../libs/enum");
+const ENUM = require("../common/enum");
 
 class OutboxMessageStatus extends ENUM {
   static ENUM = {

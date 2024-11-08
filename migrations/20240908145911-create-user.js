@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      is2_step_verification_enabled: {
+      is_two_step_verification_enabled: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

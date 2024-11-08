@@ -9,10 +9,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "user",
       });
+      
+      this.belongsTo(models.Acl, {
+        foreignKey: "acl_id",
+        as: "acl",
+      });
 
       models.User.hasMany(this, {
         foreignKey: "user_id",
         as: "userAcls",
+      });
+      
+      models.Acl.hasMany(this, {
+        foreignKey: "acl_id",
+        as: "acl",
       });
 
       models.User.belongsToMany(models.Acl, {
@@ -29,16 +39,6 @@ module.exports = (sequelize, DataTypes) => {
         as: "users",
       });
 
-      models.Acl.hasMany(this, {
-        foreignKey: "acl_id",
-        as: "acl",
-      });
-
-      this.belongsTo(models.Acl, {
-        foreignKey: "acl_id",
-        as: "acl",
-      });
-      
     }
   }
 

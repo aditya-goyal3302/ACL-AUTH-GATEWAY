@@ -4,8 +4,7 @@ const { aclRoles } = require("./acl-roles");
 const { aclMethods } = require("./acl-methods");
 
 module.exports = (sequelize, DataTypes) => {
-  class Acl extends Model {
-  }
+  class Acl extends Model {}
   Acl.init(
     {
       id: {
@@ -21,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       end_point: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       method: {
         type: DataTypes.ENUM(...aclMethods.getValues()),

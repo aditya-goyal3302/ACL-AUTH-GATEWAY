@@ -20,16 +20,38 @@ module.exports = (sequelize, DataTypes) => {
       message_status: {
         type: DataTypes.ENUM(...outboxMessageStatus.getValues()),
         defaultValue: outboxMessageStatus.ENUM.PENDING,
+        allowNull: false,
       },
       sent_at: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
         validate: {
           isDate: {
             msg: "Invalid sent_at value.",
           },
         },
       },
+      headers: {
+        type: DataTypes.JSON,
+      },
+      properties: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Properties is required.",
+          }
+        }
+      },
+      body: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Body is required.",
+          }
+        }
+      }
     },
     {
       sequelize,

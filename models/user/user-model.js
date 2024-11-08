@@ -28,21 +28,30 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          notEmpty: true,
+        },
       },
       status: {
         type: DataTypes.ENUM(...userStatus.getValues()),
         allowNull: false,
       },
-      is2_step_verification_enabled: {
+      is_two_step_verification_enabled: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
@@ -52,11 +61,18 @@ module.exports = (sequelize, DataTypes) => {
       phone_no: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+          isNumeric: true,
+        },
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          isEmail: true,
+        },
       },
       created_at: {
         allowNull: false,
