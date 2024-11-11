@@ -1,5 +1,4 @@
-exports.storageBaseUrl = "https://storage.cloud.google.com";
-module.exports = {
+const status_code = {
   SUCCESS: 200,
   CREATED: 201,
   NO_CONTENT: 204,
@@ -11,7 +10,12 @@ module.exports = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-exports.orderMap = {
+const order_map = {
   asc: "ASC",
   desc: "DESC",
 };
+
+module.exports = {
+  ...status_code,
+  order_map,
+}

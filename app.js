@@ -2,6 +2,10 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+app.listen(process.env.PORT, () =>
+  //for Socket connection use server instead of app
+  console.log(`Server Up and running on port ${process.env.PORT}`)
+);
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { error_middleware } = require("./middlewares");
@@ -31,7 +35,6 @@ app.use(
 //routes
 app.use("/", require("./routes"));
 
-
 app.use(error_middleware);
 
 //server
@@ -44,7 +47,3 @@ process.on("uncaughtException", (err) => {
   console.log("Uncaught exception:", err);
 });
 
-app.listen(process.env.PORT, () =>
-  //for Socket connection use server instead of app
-  console.log(`Server Up and running on port ${process.env.PORT}`)
-);

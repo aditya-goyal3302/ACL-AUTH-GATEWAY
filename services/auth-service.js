@@ -24,7 +24,6 @@ const gen_response_with_token = async (userData) => {
 
 exports.signup = async ({ name, username, email, password, phone_no }) => {
   const resp = await user_repository.handleManagedTransaction(async (transaction) => {
-    
     if (!name || name.length < 6) throw new BadRequest("Name is invalid");
     if (!email || !email_regex.test(email)) throw new BadRequest("Email Required");
     if (!password || password.length < 6 || password.length > 32) throw new BadRequest("Password is invalid");
@@ -40,7 +39,6 @@ exports.signup = async ({ name, username, email, password, phone_no }) => {
       payload: { status: userStatus.ENUM.ACTIVE, name, username, email, password, phone_no },
       options: { transaction },
     });
-
   });
   return gen_response_with_token(resp);
 };
@@ -140,7 +138,6 @@ exports.verify_reset_token = async ({ token }) => {
 
 exports.reset_password = async ({ password }, { token }) => {
   const resp = await user_repository.handleManagedTransaction(async (transaction) => {
-
     if (!token) throw new BadRequest("Token Required");
     if (!password) throw new BadRequest("Password Required");
 
@@ -189,7 +186,6 @@ exports.reset_password = async ({ password }, { token }) => {
 
 exports.change_password = async ({ user, old_password, new_password }) => {
   const resp = await user_repository.handleManagedTransaction(async (transaction) => {
-
     if (!old_password) throw new BadRequest("Old Password Required");
     if (!new_password) throw new BadRequest("New Password Required");
 
@@ -216,7 +212,7 @@ exports.change_password = async ({ user, old_password, new_password }) => {
   return await gen_response_with_token(resp);
 };
 
-exports.enable_two_step_verification = async ({ user }) => {
+exports.toggle_two_step_verification = async ({ user }) => {
   return await user_repository.handleManagedTransaction(async (transaction) => {
     let userData = await user_repository.findOne({
       criteria: { uuid: user.user_id },
