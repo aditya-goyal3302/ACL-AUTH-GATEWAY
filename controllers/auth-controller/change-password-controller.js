@@ -1,10 +1,14 @@
 const AuthController = require("./auth-controller");
-const { auth_service } = require("../../services");
 const { SUCCESS } = require("../../libs/constants");
 
 class ChangePasswordController extends AuthController {
+  constructor({ change_password_service }) {
+    super();
+    this.service = change_password_service;
+  }
+  
   execute = async (req) => {
-    const result = await auth_service.change_password(req.body);
+    const result = await this.service.handle(req.body);
     return [result, SUCCESS];
   };
 }

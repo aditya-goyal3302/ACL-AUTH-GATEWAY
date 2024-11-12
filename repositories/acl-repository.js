@@ -2,11 +2,9 @@ const BaseRepository = require("./base-repository");
 const { Acl } = require("../models");
 
 class AclRepository extends BaseRepository {
-  constructor({ model }) {
-    super({ model });
+  constructor() {
+    super({ model: Acl });
   }
 }
 
-module.exports = new AclRepository({
-  model: Acl,
-});
+module.exports = AclRepository;

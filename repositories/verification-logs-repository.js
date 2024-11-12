@@ -2,11 +2,9 @@ const { VerificationLogs } = require("../models");
 const BaseRepository = require("./base-repository");
 
 class VerificationLogsRepository extends BaseRepository {
-  constructor({ model }) {
-    super({ model });
+  constructor() {
+    super({ model: VerificationLogs });
   }
 }
 
-module.exports = new VerificationLogsRepository({
-  model: VerificationLogs,
-});
+module.exports = VerificationLogsRepository;

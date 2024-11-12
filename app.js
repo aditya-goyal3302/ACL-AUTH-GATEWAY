@@ -1,49 +1,52 @@
-//config
 require("dotenv").config();
-const express = require("express");
-const app = express();
-app.listen(process.env.PORT, () =>
-  //for Socket connection use server instead of app
-  console.log(`Server Up and running on port ${process.env.PORT}`)
-);
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const { error_middleware } = require("./middlewares");
+const { createContainer, asClass, asValue } = require("awilix");
+const container = createContainer();
 
-app.use(express.static("public"));
-app.use("/uploads/images", express.static("uploads/images"));
+class Server {
+  constructor({ root_router, error_middleware, parsers, app }) {
+    this.app = app;
+    this.root_router = root_router;
+    this.error_middleware = error_middleware;
+    this.parsers = parsers;
+  }
 
-//parsing
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  setup_middlewares = () => {
+    this.app.use(this.parsers.json_parser());
+    this.app.use(this.parsers.cookie_parser());
+    this.app.use(this.parsers.url_encoded_parser());
+    this.app.use(this.parsers.static());
+    this.app.use(...this.parsers.static_path());
+  };
 
-//cors
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (process.env.NODE_ENV === "development") return callback(null, true);
-      if (process.env.CLIENT_URL.split(", ").includes(origin)) callback(null, true);
-      else callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+  setup_routes = () => {
+    this.app.use(this.root_router.router);
+  };
 
-//routes
-app.use("/", require("./routes"));
+  setup_error_handlers = () => {
+    this.app.use(this.error_middleware.handle_error);
+    this.app.use(this.error_middleware.handle_not_found);
+    this.error_middleware.handle_uncaught_error();
+  };
 
-app.use(error_middleware);
+  run_engine = () => {
+    this.setup_middlewares();
+    this.setup_routes();
+    this.setup_error_handlers();
 
-//server
-app.use((req, res) => {
-  res.status(404).send({ e: "404: Page not found" });
+    this.app.listen(process.env.PORT, () => console.log(`Server Up and running on port ${process.env.PORT}`));
+  };
+}
+
+container.register({
+  server: asClass(Server).singleton(),
+  app: asValue(require("express")()),
+  express: asValue(require("express")),
+  ...require("./routes"),
+  ...require("./middlewares"),
+  ...require("./controllers"),
+  ...require("./libs").container,
+  ...require('./services').auth_service,
+  ...require('./repositories')
 });
 
-//error handling
-process.on("uncaughtException", (err) => {
-  console.log("Uncaught exception:", err);
-});
-
+container.resolve("server").run_engine();

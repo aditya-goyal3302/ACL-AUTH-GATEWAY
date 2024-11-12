@@ -1,26 +1,46 @@
-const router = require("express").Router();
-const { auth_controller } = require("../controllers");
-const { auth_middleware } = require("../middlewares");
+const auth_controller = require("../controllers");
 
-router
-  .post("/login", (req, res, next) => auth_controller.resolve("login").handle_request(req, res, next))
-  .post("/register", (req, res, next) => auth_controller.resolve("register").handle_request(req, res, next))
-  .post("/login/verify", (req, res, next) =>
-    auth_controller.resolve("validate_two_step_auth").handle_request(req, res, next)
-  )
+class AuthRouter {
+  constructor({
+    express,
+    login_controller,
+    register_controller,
+    validate_two_step_auth_controller,
+    forgot_password_controller,
+    validate_reset_password_token_controller,
+    reset_password_controller,
+    change_password_controller,
+  }) {
+    this.router = express.Router();
+    this.login_controller = login_controller;
+    this.register_controller = register_controller;
+    this.validate_two_step_auth_controller = validate_two_step_auth_controller;
+    this.forgot_password_controller = forgot_password_controller;
+    this.validate_reset_password_token_controller = validate_reset_password_token_controller;
+    this.reset_password_controller = reset_password_controller;
+    this.change_password_controller = change_password_controller;
 
-  .post("/forgot-password", (req, res, next) =>
-    auth_controller.resolve("forgot_password").handle_request(req, res, next)
-  )
-  .get("/reset-password/:token", (req, res, next) =>
-    auth_controller.resolve("validate_reset_password_token").handle_request(req, res, next)
-  )
-  .post("/reset-password/:token", (req, res, next) =>
-    auth_controller.resolve("reset_password").handle_request(req, res, next)
-  )
+    this.setup_routes();
+  }
 
-  .post("/change-password", auth_middleware.verify_auth, (req, res, next) =>
-    auth_controller.resolve("change_password").handle_request(req, res, next)
-  );
+  setup_routes = () => {
+    this.router
+      .post("/login", (req, res, next) => this.login_controller.handle_request(req, res, next))
+      .post("/register", (req, res, next) => this.register_controller.handle_request(req, res, next))
+      .post("/login/verify", (req, res, next) => this.validate_two_step_auth_controller.handle_request(req, res, next))
 
-module.exports = router;
+      .post("/forgot-password", (req, res, next) => this.forgot_password_controller.handle_request(req, res, next))
+      .get("/reset-password/:token", (req, res, next) =>
+        this.validate_reset_password_token_controller.handle_request(req, res, next)
+      )
+      .post("/reset-password/:token", (req, res, next) => this.reset_password_controller.handle_request(req, res, next))
+
+      .post(
+        "/change-password",
+        // auth_middleware.verify_auth,
+        (req, res, next) => this.change_password_controller.handle_request(req, res, next)
+      );
+  };
+}
+
+module.exports = AuthRouter;

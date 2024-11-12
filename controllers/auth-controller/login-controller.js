@@ -1,10 +1,14 @@
 const AuthController = require("./auth-controller");
-const { auth_service } = require("../../services");
 const { SUCCESS } = require("../../libs/constants");
 
 class LoginController extends AuthController {
+  constructor({ login_service }) {
+    super();
+    this.service = login_service;
+  }
+  
   execute = async (req) => {
-    const result = await auth_service.login(req.body);
+    const result = await this.service.handle(req.body);
     if (!result?.token) {
       return [{ message: "OTP Sent Successfully" }, SUCCESS];
     }

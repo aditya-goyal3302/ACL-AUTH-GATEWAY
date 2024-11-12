@@ -1,12 +1,24 @@
-const express = require("express");
 const { SUCCESS } = require("../libs/constants");
-const router = express.Router();
+const { asClass } = require("awilix");
 
-router.get("/", (req, res) => {
-  res.status(SUCCESS).send("ACL-AUTH-GATEWAY Service 1.0.0");
-});
+class RootRouter {
+  constructor({ express, auth_router, user_router }) {
+    this.router = express.Router();
+    this.auth_router = auth_router;
+    this.user_router = user_router;
+    this.setup_routes();
+  }
 
-router.use('/user', require('./users-routes'));
-router.use("/auth", require("./auth-routes"));
+  setup_routes = () => {
+    this.router.get("/", (req, res) => res.status(SUCCESS).send("ACL-AUTH-GATEWAY Service 1.0.0"));
 
-module.exports = router;
+    this.router.use("/user", this.user_router.router);
+    this.router.use("/auth", this.auth_router.router);
+  };
+}
+
+module.exports = {
+  root_router: asClass(RootRouter),
+  auth_router: asClass(require("./auth-routes")),
+  user_router: asClass(require("./user-routes")),
+};

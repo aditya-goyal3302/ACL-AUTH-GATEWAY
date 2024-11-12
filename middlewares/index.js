@@ -1,4 +1,6 @@
+const { asClass } = require("awilix");
+
 module.exports = {
-    auth_middleware: require('./auth-middleware.js'),
-    error_middleware: require('./error-middleware.js'),
-}
+  error_middleware: asClass(require("./error-middleware.js")),
+  auth_middleware: asClass(require("./auth-middleware.js")),
+};

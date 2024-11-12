@@ -1,9 +1,14 @@
+const { SUCCESS } = require("../../libs/constants");
 const AuthController = require("./auth-controller");
-const { auth_service } = require("../../services");
 
 class ValidateResetPasswordTokenController extends AuthController {
+  constructor({ validate_reset_password_token_service }) {
+    super();
+    this.service = validate_reset_password_token_service;
+  }
+
   execute = async (req) => {
-    const result = await auth_service.verify_reset_token(req.params);
+    const result = await this.service.handle(req.params);
     return [result, SUCCESS];
   };
 }

@@ -4,8 +4,8 @@ const { User, Acl } = require("../models");
 const { userStatus } = require("../models/user/user-status");
 
 class UserRepository extends BaseRepository {
-  constructor({ model }) {
-    super({ model });
+  constructor() {
+    super({ model: User });
   }
   include = [
     // {
@@ -37,6 +37,4 @@ class UserRepository extends BaseRepository {
   }
 }
 
-module.exports = new UserRepository({
-  model: User,
-});
+module.exports = UserRepository;

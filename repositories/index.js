@@ -1,6 +1,8 @@
+const { asClass } = require("awilix");
+
 module.exports = {
-    base_repository: require("./base-repository.js"),
-    user_repository: require("./user-repository.js"),
-    acl_repository: require("./acl-repository.js"),
-    verification_logs_repository: require("./verification-logs-repository.js"),
-}
+  base_repository: asClass(require("./base-repository.js")).scoped(),
+  user_repository: asClass(require("./user-repository.js")).scoped(),
+  acl_repository: asClass(require("./acl-repository.js")).scoped(),
+  verification_logs_repository: asClass(require("./verification-logs-repository.js")).scoped(),
+};
