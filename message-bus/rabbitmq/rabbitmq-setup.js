@@ -1,6 +1,6 @@
-class RabbitMQConfigurer {
+class RabbitMQSetup {
   /**
-   * Create a RabbitMQConfigurer instance.
+   * Create a RabbitMQSetup instance.
    * @param {Object} RabbitMqConnection - The RabbitMQ connection object.
    */
   constructor(rabbitMqConnection) {
@@ -25,5 +25,5 @@ class RabbitMQConfigurer {
 }
 
 module.exports = {
-  RabbitMQConfigurer,
+  RabbitMQSetup,
 };

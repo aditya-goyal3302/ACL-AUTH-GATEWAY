@@ -7,7 +7,7 @@ if (!process.env.NODE_ENV) {
 const config = require("./config.js")[process.env.NODE_ENV];
 const sequelize = new Sequelize(config);
 
-const checkConnection = async () => {
+const check_connection = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
@@ -20,5 +20,5 @@ const checkConnection = async () => {
 
 module.exports = {
   sequelize,
-  checkConnection,
+  check_connection,
 };

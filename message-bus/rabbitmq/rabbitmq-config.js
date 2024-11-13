@@ -44,7 +44,7 @@ class RabbitMQConfig {
    * Create a RabbitMQConfig instance.
    * @param {RabbitMQConfigParams} config - The configuration object.
    */
-  constructor(ora) {
+  constructor() {
     this.config = config;
     this.validateConfig(config);
   }
@@ -54,7 +54,7 @@ class RabbitMQConfig {
    * Exits the process if any variables are missing.
    * @param {RabbitMQConfigParams} config - The configuration object.
    */
-  async validateConfig(config) {
+  validateConfig(config) {
     console.log("Checking prerequisites...: ");
 
     if (!config) {

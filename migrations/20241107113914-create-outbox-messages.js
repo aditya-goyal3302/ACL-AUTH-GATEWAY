@@ -11,14 +11,53 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      uuid: {
+      message_id: {
         type: Sequelize.UUID,
+        unique: "unique_index",
         allowNull: false,
-        unique: true,
       },
       message_status: {
         type: Sequelize.ENUM(...outboxMessageStatus.getValues()),
         defaultValue: outboxMessageStatus.ENUM.PENDING,
+        allowNull: false,
+      },
+      sent_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        validate: {
+          isDate: {
+            msg: "Invalid sent_at value.",
+          },
+        },
+      },
+      headers: {
+        type: Sequelize.JSON,
+      },
+      properties: {
+        type: Sequelize.JSON,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Properties is required.",
+          },
+        },
+      },
+      body: {
+        type: Sequelize.JSON,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Body is required.",
+          },
+        },
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
     });
   },

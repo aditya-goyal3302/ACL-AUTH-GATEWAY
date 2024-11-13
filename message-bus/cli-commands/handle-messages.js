@@ -3,10 +3,9 @@ const { Command } = require("commander");
 const Consumer = require("../workers/consumer");
 const { RabbitMQConfig } = require("../rabbitmq/rabbitmq-config");
 const { RabbitMQConnection } = require("../rabbitmq/rabbitmq-connection");
-const { RabbitMQConfigurer } = require("../rabbitmq/rabbitmq-configurer");
-const { dbConnection } = require("../../config");
+const { RabbitMQSetup } = require("../rabbitmq/rabbitmq-setup");
+const { db_connection } = require("../../config");
 const { messageHandler } = require("../inbox-message-handler");
-const ora = require('ora-classic');
 
 const program = new Command();
 
@@ -26,13 +25,13 @@ program
             if ( isNaN( parsedLimit ) ) throw new Error(`TypeError: Option 'limit' is the wrong type,must be an integer got:${limit}`);
             console.log(`Handling messages with limit: ${parsedLimit}`);
 
-            await dbConnection.checkConnection();
+            await db_connection.check_connection();
 
-            const rabbitMQConnection = new RabbitMQConnection({ rabbitMQConfig: new RabbitMQConfig(ora) });
+            const rabbitMQConnection = new RabbitMQConnection({ rabbitMQConfig: new RabbitMQConfig() });
             await rabbitMQConnection.connect();
 
-            const rabbitMQConfigurer = new RabbitMQConfigurer(rabbitMQConnection);
-            await rabbitMQConfigurer.configure();
+            const rabbitMQSetup = new RabbitMQSetup(rabbitMQConnection);
+            await rabbitMQSetup.configure();
 
             const consumer = new Consumer({ rabbitMQConnection, messageHandler, limit : parsedLimit });
             consumer.init();
@@ -46,7 +45,7 @@ process.on('uncaughtException', (err) => {
     console.log('uncaught exception', err);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
     console.log('unhandledRejection', reason);
 });
 

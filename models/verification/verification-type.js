@@ -1,10 +1,10 @@
 const ENUM = require("../common/enum");
 
-class VerificationLogType extends ENUM {
+class VerificationType extends ENUM {
   static ENUM = {
     OTP: "OTP",
     TOKEN: "TOKEN",
   };
 }
 
-exports.verificationLogType = VerificationLogType
+exports.verificationType = VerificationType

@@ -40,8 +40,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             msg: "Properties is required.",
-          }
-        }
+          },
+        },
       },
       body: {
         type: DataTypes.JSON,
@@ -49,9 +49,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             msg: "Body is required.",
-          }
-        }
-      }
+          },
+        },
+      },
     },
     {
       sequelize,

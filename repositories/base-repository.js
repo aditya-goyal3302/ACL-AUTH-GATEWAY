@@ -1,4 +1,3 @@
-const { Json } = require("sequelize/lib/utils");
 const { sequelize } = require("../config/db-connection");
 const { badRequest } = require("../libs/error");
 class BaseRepository {

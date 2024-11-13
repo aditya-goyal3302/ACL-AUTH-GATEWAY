@@ -1,16 +1,19 @@
 const cookieParser = require("cookie-parser");
-const express = require("express");
 
 class Parsers {
+  constructor({ express }) {
+    this.express = express;
+  }
+
   cookie_parser = () => cookieParser();
 
-  json_parser = () => express.json();
+  json_parser = () => this.express.json();
 
-  url_encoded_parser = () => express.urlencoded({ extended: true });
+  url_encoded_parser = () => this.express.urlencoded({ extended: true });
 
-  static = () => express.static("public");
+  static = () => this.express.static("public");
 
-  static_path = () => ["/uploads/images", express.static("uploads/images")];
+  static_path = () => ["/uploads/images", this.express.static("uploads/images")];
 }
 
 module.exports = Parsers;

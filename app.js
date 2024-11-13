@@ -28,12 +28,29 @@ class Server {
     this.error_middleware.handle_uncaught_error();
   };
 
-  run_engine = () => {
-    this.setup_middlewares();
-    this.setup_routes();
-    this.setup_error_handlers();
+  run_engine = async () => {
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    this.app.listen(process.env.PORT, () => console.log(`Server Up and running on port ${process.env.PORT}`));
+    this.setup_middlewares();
+    process.stdout.write("3...");
+    await sleep(200);
+
+    this.setup_routes();
+    process.stdout.write("2...");
+    await sleep(200);
+
+    this.setup_error_handlers();
+    process.stdout.write("1...");
+    await sleep(200);
+
+    ("Running Engine".split("")).forEach(async (char,index) => {
+      await sleep(50 * index);
+      process.stdout.write(char);
+    })
+
+    await sleep(800);
+
+    this.app.listen(process.env.PORT, () => console.log(`\nServer Up and running on port ${process.env.PORT}`));
   };
 }
 
@@ -45,8 +62,11 @@ container.register({
   ...require("./middlewares"),
   ...require("./controllers"),
   ...require("./libs").container,
-  ...require('./services'),
-  ...require('./repositories')
+  ...require("./services"),
+  ...require("./repositories"),
 });
 
-container.resolve("server").run_engine();
+const server = container.resolve("server");
+server.run_engine();
+
+module.exports = container;

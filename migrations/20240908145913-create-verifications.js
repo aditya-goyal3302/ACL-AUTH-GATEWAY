@@ -1,11 +1,11 @@
 "use strict";
 
-const { verificationLogType } = require('../models/verification-logs/verification-log-type');
+const { verificationType } = require('../models/verification/verification-type');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("verification_logs", {
+    await queryInterface.createTable("verifications", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       type: {
-        type: Sequelize.ENUM(...verificationLogType.getValues()),
+        type: Sequelize.ENUM(...verificationType.getValues()),
         allowNull: false,
       },
       otp: {
@@ -50,6 +50,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("verification_logs");
+    await queryInterface.dropTable("verifications");
   },
 };

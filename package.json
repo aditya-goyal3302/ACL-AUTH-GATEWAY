@@ -15,7 +15,9 @@
     "seed": "cross-env npx sequelize-cli db:seed:all",
     "seed:undo": "cross-env npx sequelize-cli db:seed:undo",
     "seed:undo:all": "cross-env npx sequelize-cli db:seed:undo:all",
-    "cleanStart": "npm i && npm run db:drop && npm run db:create && npm run up && npm run seed && npm run dev"
+    "cleanStart": "npm i && npm run db:drop && npm run db:create && npm run up && npm run seed && npm run dev",
+    "dispatch-messages": "node message-bus/cli-commands/dispatch-messages.js",
+    "handle-messages": "node message-bus/cli-commands/handle-messages.js"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +33,7 @@
     "dotenv": "^16.4.2",
     "express": "^4.18.2",
     "express-http-proxy": "^2.1.1",
+    "jsonrepair": "^3.10.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
     "nodemon": "^3.0.3",

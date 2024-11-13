@@ -1,13 +1,13 @@
 "use strict";
 const { Model } = require("sequelize");
-const { verificationLogType } = require("./verification-log-type");
+const { verificationType } = require("./verification-type");
 
 module.exports = (sequelize, DataTypes) => {
   class VerificationLogs extends Model {
 
     static associate(models) {
       VerificationLogs.belongsTo(models.User, { foreignKey: "user_id", as: "user_details" });
-      models.User.hasMany(VerificationLogs, { foreignKey: "user_id", as: "verification_logs" });
+      models.User.hasMany(VerificationLogs, { foreignKey: "user_id", as: "verifications" });
     }
 
     toJSON() {
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       type: {
-        type: DataTypes.ENUM(...verificationLogType.getValues()),
+        type: DataTypes.ENUM(...verificationType.getValues()),
         allowNull: false,
       },
       otp: {
@@ -66,8 +66,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "VerificationLogs",
-      tableName: "verification_logs",
+      modelName: "Verification",
+      tableName: "verifications",
       updatedAt: false,
     }
   );
