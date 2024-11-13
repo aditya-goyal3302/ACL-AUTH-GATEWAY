@@ -1,12 +1,11 @@
 const { BadRequest } = require("../../libs/error");
 const AuthService = require("./auth-service");
-const mail_service = require("../mail-service");
 const { userStatus } = require("../../models/user/user-status");
 
 class ForgotPasswordService extends AuthService {
-  constructor({ verification_logs_repository, user_repository }) {
-    super({user_repository});
-    this.verification_logs_repository = verification_logs_repository;
+  constructor({ send_reset_password_token_service, user_repository }) {
+    super({ user_repository });
+    this.send_reset_password_token_service = send_reset_password_token_service;
   }
 
   execute = async ({ email }) => {
@@ -18,26 +17,8 @@ class ForgotPasswordService extends AuthService {
       if (!user) throw new BadRequest("User Not Found!");
       if (user.status !== userStatus.ENUM.ACTIVE) throw new BadRequest("User is not found!");
 
-      const verificationLog = await this.verification_logs_repository.create({
-        payload: {
-          user_id: user.id,
-          email,
-          purpose: "reset_password",
-          expires_at: new Date(Date.now() + 1000 * 60 * 60 * 2),
-          type: "TOKEN",
-        },
-        options: { transaction },
-      });
-
-      const token = verificationLog.uuid;
-      const client = process.env.CLIENT_URL;
-
-      await mail_service.mail_reset_link({
-        to: user.email,
-        subject: "Reset Password Link",
-        url: `${client}/reset_password/${token}`,
-        name: user.name,
-      });
+      // verification-service
+      await this.send_reset_password_token_service.handle({ user, purpose: "reset_password", transaction });
 
       return { message: "Reset Password Link Sent Successfully" };
     });

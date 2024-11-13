@@ -3,27 +3,19 @@ const AuthService = require("./auth-service");
 const { User } = require("../../models");
 
 class ResetPasswordService extends AuthService {
-  constructor({ verification_logs_repository, user_repository }) {
-    super({user_repository});
-    this.verification_logs_repository = verification_logs_repository;
+  constructor({ validate_reset_password_token_service, user_repository }) {
+    super({ user_repository });
+    this.validate_reset_password_token_service = validate_reset_password_token_service;
   }
+
   execute = async ({ password }, { token }) => {
     const resp = await this.user_repository.handleManagedTransaction(async (transaction) => {
       if (!token) throw new BadRequest("Token Required");
       if (!password) throw new BadRequest("Password Required");
 
       const verificationLog = JSON.parse(
-        JSON.stringify(
-          await this.verification_logs_repository.findOne({
-            criteria: { uuid: token, used_at: null },
-            options: { transaction },
-            include: [{ model: User, as: "user_details" }],
-          })
-        )
+        JSON.stringify(await this.validate_reset_password_token_service.handle({ token, transaction }))
       );
-
-      if (!verificationLog) throw new BadRequest("Token Invalid!");
-      if (verificationLog.expires_at < new Date()) throw new BadRequest("Token Expired!");
 
       const user = verificationLog.user_details;
 

@@ -1,12 +1,15 @@
 const { SUCCESS } = require("../../libs/constants");
-const { user_service } = require("../../services");
 const UserController = require("./user-controller");
 
-class RemoveUserImages extends UserController {
+class RemoveUserImagesController extends UserController {
+  constructor({ remove_user_image_service }) {
+    super();
+    this.service = remove_user_image_service;
+  }
   execute = async (req) => {
-    const response = await user_service.delete_user_image(req);
+    const response = await this.service.handle(req);
     return [response, SUCCESS];
   };
 }
 
-module.exports = RemoveUserImages;
+module.exports = RemoveUserImagesController;

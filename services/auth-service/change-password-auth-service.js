@@ -14,8 +14,9 @@ class ChangePasswordService extends AuthService {
       });
 
       const check = await userData.comparePassword(old_password);
-      if (!user || user.status !== userStatus.ENUM.ACTIVE) throw new BadRequest("Invalid email or password");
-      if (!check) throw new BadRequest("Invalid email or password");
+      if (!check) throw new BadRequest("Invalid Old Password");
+
+      if (!user || user.status !== userStatus.ENUM.ACTIVE) throw new BadRequest("User Blocked");
       userData = userData.toJSON();
 
       const updatedUser = await this.user_repository.findOne({

@@ -1,13 +1,16 @@
 const { SUCCESS, NO_CONTENT } = require("../../libs/constants");
-const { user_service } = require("../../services");
 const UserController = require("./user-controller");
 
-class PatchUserDetails extends UserController {
+class PatchUserDetailsController extends UserController {
+  constructor({ patch_user_details_service }) {
+    super();
+    this.service = patch_user_details_service;
+  }
   execute = async (req) => {
-    const response = await user_service.patch_user_details(req.body);
+    const response = await this.service.handle(req);
     if (!response) return [null, NO_CONTENT];
     return [null, SUCCESS];
   };
 }
 
-module.exports = PatchUserDetails;
+module.exports = PatchUserDetailsController;

@@ -3,7 +3,7 @@ const utils = require("../../libs/utils");
 
 class AuthService extends BaseService {
   constructor({ user_repository }) {
-    super({user_repository});
+    super();
     this.user_repository = user_repository;
   }
 

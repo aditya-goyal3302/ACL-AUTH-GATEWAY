@@ -1,5 +1,3 @@
-const auth_controller = require("../controllers");
-
 class AuthRouter {
   constructor({
     express,
@@ -10,6 +8,7 @@ class AuthRouter {
     validate_reset_password_token_controller,
     reset_password_controller,
     change_password_controller,
+    auth_middleware,
   }) {
     this.router = express.Router();
     this.login_controller = login_controller;
@@ -19,6 +18,8 @@ class AuthRouter {
     this.validate_reset_password_token_controller = validate_reset_password_token_controller;
     this.reset_password_controller = reset_password_controller;
     this.change_password_controller = change_password_controller;
+
+    this.auth_middleware = auth_middleware;
 
     this.setup_routes();
   }
@@ -37,7 +38,7 @@ class AuthRouter {
 
       .post(
         "/change-password",
-        // auth_middleware.verify_auth,
+        (req, res, next) => this.auth_middleware.handle(req, res, next),
         (req, res, next) => this.change_password_controller.handle_request(req, res, next)
       );
   };

@@ -45,7 +45,7 @@ container.register({
   ...require("./middlewares"),
   ...require("./controllers"),
   ...require("./libs").container,
-  ...require('./services').auth_service,
+  ...require('./services'),
   ...require('./repositories')
 });
 

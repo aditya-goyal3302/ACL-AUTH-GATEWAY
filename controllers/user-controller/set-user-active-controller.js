@@ -1,10 +1,10 @@
 const { SUCCESS } = require("../../libs/constants");
 const UserController = require("./user-controller");
 
-class SetUserImagesController extends UserController {
-  constructor({ set_user_image_service }) {
+class SetUserActiveController extends UserController {
+  constructor({ set_user_active_service }) {
     super();
-    this.service = set_user_image_service;
+    this.service = set_user_active_service;
   }
   execute = async (req) => {
     const response = await this.service.handle(req);
@@ -12,4 +12,4 @@ class SetUserImagesController extends UserController {
   };
 }
 
-module.exports = SetUserImagesController;
+module.exports = SetUserActiveController;
