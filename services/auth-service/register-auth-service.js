@@ -21,7 +21,7 @@ class RegisterService extends AuthService {
       if (is_existing_username) throw new Conflict("Username Already Exists!");
 
       return await this.user_repository.create({
-        payload: { status: userStatus.ENUM.ACTIVE, name, username, email, password, phone_no },
+        payload: { status: userStatus.ENUM.ACTIVE, name, username, email, password, phone_no, is_two_step_verification_enabled: true },
         options: { transaction },
       });
     });

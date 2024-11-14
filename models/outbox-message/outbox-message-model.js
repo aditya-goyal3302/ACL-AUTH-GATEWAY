@@ -3,7 +3,30 @@ const { Model } = require("sequelize");
 const { outboxMessageStatus } = require("../outbox-message/outbox-message-status");
 
 module.exports = (sequelize, DataTypes) => {
-  class OutboxMessage extends Model {}
+  class OutboxMessage extends Model {
+    async markAsSent() {
+      this.message_status = outboxMessageStatus.ENUM.SENT;
+      this.sent_at = new Date();
+      await this.save();
+    }
+
+    getMessageId() {
+      return this.get().message_id;
+    }
+
+    getProperties() {
+      const outbox_message = this.get();
+      return {
+        ...outbox_message.properties,
+        headers: outbox_message.headers,
+      };
+    }
+
+    getBody() {
+      const outbox_message = this.get();
+      return outbox_message.body;
+    }
+  }
 
   OutboxMessage.init(
     {
@@ -24,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       sent_at: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         validate: {
           isDate: {
             msg: "Invalid sent_at value.",

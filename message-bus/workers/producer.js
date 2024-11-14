@@ -38,7 +38,7 @@ class Producer {
       console.log(`This message is sent to exchange ${this.config.fanoutExchange}`, message);
 
       await outboxMessage.markAsSent();
-      await outboxMessage.save();
+      // await outboxMessage.save();
     } catch (error) {
       console.log(`Error while publishing message ${outboxMessage.type} with id ${outboxMessage.message_id}`, error);
     }

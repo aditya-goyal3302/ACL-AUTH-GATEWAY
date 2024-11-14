@@ -6,6 +6,7 @@ const { RabbitMQSetup } = require("../rabbitmq/rabbitmq-setup");
 const OutboxMessageRelay = require("../outbox-message-relay");
 const { db_connection } = require("../../config");
 const Producer = require("../workers/producer");
+const outboxMessageRepository = require("../../app").resolve("outbox_message_repository");
 
 const program = new Command();
 
@@ -37,8 +38,8 @@ program
       const rabbitMQSetup = new RabbitMQSetup(rabbitMQConnection);
       await rabbitMQSetup.configure();
 
-      const outboxMessageRepository = require("../../app").resolve("outbox_message_repository");
-      
+    // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      // await sleep(5000);
       const outboxMessageRelay = new OutboxMessageRelay({
         producer: new Producer({ rabbitMQConnection, rabbitMQSetup }),
         outboxMessageRepository,

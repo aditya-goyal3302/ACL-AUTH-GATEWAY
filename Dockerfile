@@ -1,5 +1,5 @@
 # Use the official Node.js image as a base for dependency installation
-ARG NODE_VERSION=node:20.13.1-alpine3.20
+ARG NODE_VERSION=node:22.11-alpine3.20
 FROM $NODE_VERSION AS dependency-base
 
 ENV PROJECT_DIR=/app

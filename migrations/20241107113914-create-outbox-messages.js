@@ -23,12 +23,7 @@ module.exports = {
       },
       sent_at: {
         type: Sequelize.DATE,
-        allowNull: false,
-        validate: {
-          isDate: {
-            msg: "Invalid sent_at value.",
-          },
-        },
+        allowNull: true,
       },
       headers: {
         type: Sequelize.JSON,
@@ -36,28 +31,18 @@ module.exports = {
       properties: {
         type: Sequelize.JSON,
         allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Properties is required.",
-          },
-        },
       },
       body: {
         type: Sequelize.JSON,
         allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Body is required.",
-          },
-        },
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
     });
   },

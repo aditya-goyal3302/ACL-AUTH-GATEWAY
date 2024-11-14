@@ -1,6 +1,5 @@
 require("dotenv").config();
 const { createContainer, asClass, asValue } = require("awilix");
-const container = createContainer();
 
 class Server {
   constructor({ root_router, error_middleware, parsers, app }) {
@@ -43,16 +42,17 @@ class Server {
     process.stdout.write("1...");
     await sleep(200);
 
-    ("Running Engine".split("")).forEach(async (char,index) => {
+    "Running Engine".split("").forEach(async (char, index) => {
       await sleep(50 * index);
       process.stdout.write(char);
-    })
+    });
 
     await sleep(800);
 
     this.app.listen(process.env.PORT, () => console.log(`\nServer Up and running on port ${process.env.PORT}`));
   };
 }
+const container = createContainer();
 
 container.register({
   server: asClass(Server).singleton(),
@@ -65,8 +65,5 @@ container.register({
   ...require("./services"),
   ...require("./repositories"),
 });
-
-const server = container.resolve("server");
-server.run_engine();
 
 module.exports = container;

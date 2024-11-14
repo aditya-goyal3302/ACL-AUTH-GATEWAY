@@ -21,7 +21,7 @@ class ErrorMiddleware {
   static error_handler = (error) => {
     switch (true) {
       case error instanceof Sequelize.ValidationError:
-        error.message = get_error_message(error);
+        error.message = ErrorMiddleware.get_error_message(error);
         return BAD_REQUEST;
       case error instanceof BadRequest:
         return BAD_REQUEST;
